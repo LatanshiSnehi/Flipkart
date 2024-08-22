@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -15,28 +16,19 @@ import java.util.List;
 import java.util.logging.Level;
 
 
-// import io.github.bonigarcia.wdm.WebDriverManager;
 import demo.wrappers.Wrappers;
 
 public class TestCases {
     ChromeDriver driver;
+    Wrappers wrappers;
+    WebDriverWait wait ; 
 
-    /*
-     * TODO: Write your tests here with testng @Test annotation. 
-     * Follow `testCase01` `testCase02`... format or what is provided in instructions
-     */
-
-     
-    /*
-     * Do not change the provided methods unless necessary, they will help in automation and assessment
-     */
-    @BeforeTest
+    
+    @BeforeTest(enabled =  true)
     public void startBrowser()
     {
         System.setProperty("java.util.logging.config.file", "logging.properties");
 
-        // NOT NEEDED FOR SELENIUM MANAGER
-        // WebDriverManager.chromedriver().timeout(30).setup();
 
         ChromeOptions options = new ChromeOptions();
         LoggingPreferences logs = new LoggingPreferences();
@@ -53,10 +45,47 @@ public class TestCases {
         driver.manage().window().maximize();
     }
 
-    @AfterTest
+
+    @Test(description = "Verify the functionality of testCase01", enabled = true )
+    public void testCase01() throws InterruptedException{
+        driver.get("https://www.flipkart.com/");
+        Thread.sleep(3000);
+        wrappers = new Wrappers(driver);
+        wrappers.searchItems("Washing Machine");
+        wrappers.sortByPopularity();
+        int itemsCoun = wrappers.itmesCount();
+        System.out.println("Count of items with ratings less than or equal to 4 is ::  " + itemsCoun);
+    }
+    
+    @Test(description = "Verify the functionality of testCase02" , enabled = true)
+    public void testCase02() throws InterruptedException{
+        driver.get("https://www.flipkart.com/");
+        Thread.sleep(2000);
+        wrappers = new Wrappers(driver);
+        wrappers.searchItems("iPhone");
+        wrappers.getTitleandDisCount();
+        
+    }
+
+    @Test(description = "Verify the functionality of testcase03", enabled = true)
+    public void testCase03() throws InterruptedException{
+        driver.get("https://www.flipkart.com/");
+        Thread.sleep(2000);
+        wrappers = new Wrappers(driver);
+        wrappers.searchItems("Coffee Mug");
+        wrappers.selectCustomerRatings();
+        wrappers.printItemsHighestNumbersOfRatings();
+        }
+
+
+    
+
+    
+
+    @AfterTest(enabled = true)
     public void endTest()
     {
-        driver.close();
+        
         driver.quit();
 
     }
